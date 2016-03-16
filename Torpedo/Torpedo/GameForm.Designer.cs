@@ -87,6 +87,7 @@
             this.enemyPanel.Name = "enemyPanel";
             this.enemyPanel.Size = new System.Drawing.Size(300, 300);
             this.enemyPanel.TabIndex = 1;
+            this.enemyPanel.Click += new System.EventHandler(this.enemyPanel_Click);
             this.enemyPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.enemyPanel_Paint);
             // 
             // shipSizeLabel

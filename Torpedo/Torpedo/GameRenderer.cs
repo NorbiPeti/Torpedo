@@ -31,7 +31,7 @@ namespace Torpedo
             RenderLines();
             RenderGameField();
         }
-        private void RenderLines()
+        public void RenderLines()
         {
             using (Graphics gr = Parent.CreateGraphics())
             {

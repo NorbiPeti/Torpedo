@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ namespace Torpedo
         /// <summary>
         /// <para>Az első játékos</para>
         /// </summary>
-        public static Player Player1 { get; set; }
+        public static Player Player1 { get; set; } = new Player();
 
-        private static Player p2;
+        private static Player p2 = new Player();
         /// <summary>
         /// <para>A második játékos</para>
         /// </summary>
@@ -29,6 +30,34 @@ namespace Torpedo
             }
         }
 
+        private static bool swapped = false;
+        /// <summary>
+        /// Az aktuális játékos
+        /// </summary>
+        public static Player CurrentOwn
+        {
+            get
+            {
+                return (swapped ? Player2 : Player1);
+            }
+        }
+
+        /// <summary>
+        /// Az aktuális ellenfél
+        /// </summary>
+        public static Player CurrentEnemy
+        {
+            get
+            {
+                return (swapped ? Player1 : Player2);
+            }
+        }
+
+        public static void SwapPlayers()
+        {
+            swapped = !swapped;
+        }
+
         static Player()
         {
             Game.GameTypeChange += Game_GameTypeChange_Global;
@@ -38,6 +67,7 @@ namespace Torpedo
         {
             Player1 = new Player();
             Player2 = new Player();
+            swapped = false;
         }
 
         /// <summary>
@@ -73,5 +103,7 @@ namespace Torpedo
                     return -1;
             }
         }
+
+        public List<Point> Shots = new List<Point>();
     }
 }

@@ -18,7 +18,7 @@ namespace Torpedo
 
         private static ReadOnlyDictionary<FieldTypeEnemy, Color> FieldTypes = new ReadOnlyDictionary<FieldTypeEnemy, Color>(new Dictionary<FieldTypeEnemy, Color>()
         {
-            {FieldTypeEnemy.Targeted, Color.LightBlue},
+            {FieldTypeEnemy.Missed, Color.LightBlue},
             {FieldTypeEnemy.TargetHit, Color.Red},
             {FieldTypeEnemy.EnemyShipDestroyed, Color.Black}
         });
@@ -31,25 +31,35 @@ namespace Torpedo
         public override void RenderShip(Ship ship)
         {
             //TODO: Képek az egyes hajótípusokhoz
+            bool destroyed = ship.DamagedParts.All(p => p);
             for (int i = 0; i < ship.Size; i++)
             {
+                FieldTypeEnemy ft = FieldTypeEnemy.Missed;
+                if (destroyed)
+                    ft = FieldTypeEnemy.EnemyShipDestroyed;
+                else if (ship.DamagedParts[i])
+                    ft = FieldTypeEnemy.TargetHit;
+                if (ft == FieldTypeEnemy.Missed) //A Missed itt nem használható, ezért alapértelmezett értékként van használva
+                    continue; //Nem rajzolja meg a sértetlen hajókat és hajórészeket
+                
                 if (ship.Direction == ShipDirection.Horizontal)
-                    UpdateField(ship.X + i, ship.Y, FieldTypeEnemy.Targeted);
+                    UpdateField(ship.X + i, ship.Y, ft);
                 else
-                    UpdateField(ship.X, ship.Y + i, FieldTypeEnemy.Targeted);
+                    UpdateField(ship.X, ship.Y + i, ft);
             }
             //TODO: Rárajzolni a képet a mezőkre
         }
 
         public override void RenderGameField()
         {
-            Player.Player2.Ships.ForEach(s => RenderShip(s));
+            Player.CurrentEnemy.Ships.ForEach(s => RenderShip(s));
+            Player.CurrentOwn.Shots.ForEach(s => UpdateField(s.X, s.Y, FieldTypeEnemy.Missed));
         }
     }
 
     public enum FieldTypeEnemy
     {
-        Targeted,
+        Missed,
         TargetHit,
         EnemyShipDestroyed
     }

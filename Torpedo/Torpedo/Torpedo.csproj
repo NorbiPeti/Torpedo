@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AIPlayer.cs" />
     <Compile Include="EnemyGameRenderer.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
@@ -59,6 +60,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameRenderer.cs" />
+    <Compile Include="GameStateChangeEventArgs.cs" />
     <Compile Include="GameTypeChangeEventArgs.cs" />
     <Compile Include="OwnGameRenderer.cs" />
     <Compile Include="Player.cs" />

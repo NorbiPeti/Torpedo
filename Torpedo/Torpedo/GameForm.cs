@@ -23,14 +23,40 @@ namespace Torpedo
             Instance = this;
             Game.GameTypeChange += Game_GameTypeChange;
             Game.Type = GameType.Singleplayer;
+            Game.GameStateChange += Game_GameStateChange;
+        }
+
+        public void SetPanelsEnabled(bool enabled)
+        {
+            ownPanel.Enabled = enabled;
+            enemyPanel.Enabled = enabled;
+        }
+
+        public void SetPanelsVisible(bool visible)
+        {
+            ownPanel.Visible = visible;
+            enemyPanel.Visible = visible;
+        }
+
+        public void Reset()
+        {
+            egyjátékosToolStripMenuItem.Enabled = true;
+            egyjátékosToolStripMenuItem.PerformClick();
+            GameRenderer.Own.RenderGame();
+            GameRenderer.Enemy.RenderGame();
         }
 
         private void Game_GameTypeChange(object sender, GameTypeChangeEventArgs e)
         {
             egyjátékosToolStripMenuItem.Enabled = false;
             többjátékosToolStripMenuItem.Enabled = false;
-            if (Player.Player1.NextShip != -1)
-                shipSizeLabel.Text = "Következő hajó: " + Player.Player1.NextShip;
+            moveUpButton.Enabled = true;
+            moveDownButton.Enabled = true;
+            moveLeftButton.Enabled = true;
+            moveRightButton.Enabled = true;
+            rotateButton.Enabled = true;
+            if (Player.CurrentOwn.NextShip != -1)
+                shipSizeLabel.Text = "Következő hajó: " + Player.CurrentOwn.NextShip;
             else
                 shipSizeLabel.Text = "";
             switch(e.NewValue)
@@ -67,20 +93,23 @@ namespace Torpedo
         {
             if (Game.State != GameState.Prepare)
                 return;
-            if (Player.Player1.NextShip == -1)
+            if (Player.CurrentOwn.NextShip == -1)
                 return;
             Point clickedfield = GameRenderer.Own.PixelsToFields(ownPanel.PointToClient(Cursor.Position));
-            Ship ship = new Ship(clickedfield.X, clickedfield.Y, Game.CurrentPlayer.NextShip, ShipDirection.Horizontal, false);
+            Ship ship = new Ship(clickedfield.X, clickedfield.Y, Player.CurrentOwn.NextShip, ShipDirection.Horizontal, Player.CurrentOwn);
             if (Ship.CheckHasShip(ship))
                 return;
-            Game.CurrentPlayer.Ships.Add(ship);
+            Player.CurrentOwn.Ships.Add(ship);
             GameRenderer.Own.RenderShip(ship);
             lastship = ship;
-            //TODO
-            if (Player.Player1.NextShip != -1)
-                shipSizeLabel.Text = "Következő hajó: " + Player.Player1.NextShip;
+            if (Player.CurrentOwn.NextShip != -1)
+                shipSizeLabel.Text = "Következő hajó: " + Player.CurrentOwn.NextShip;
             else
+            {
                 shipSizeLabel.Text = "";
+                lastship = null;
+                Game.NextTurn();
+            }
         }
 
         private void MoveShip(object sender, EventArgs e)
@@ -104,6 +133,36 @@ namespace Torpedo
             {
                 lastship.Rotate();
             }
+        }
+
+        private void enemyPanel_Click(object sender, EventArgs e)
+        {
+            if (Game.State != GameState.Battle)
+                return;
+            Point clickedfield = GameRenderer.Enemy.PixelsToFields(enemyPanel.PointToClient(Cursor.Position));
+            Ship ship = Ship.GetShipAtField(Player.CurrentEnemy, clickedfield.X, clickedfield.Y);
+            if (ship == null)
+            {
+                Player.CurrentOwn.Shots.Add(clickedfield);
+            }
+            else
+            {
+                if (ship.Direction == ShipDirection.Horizontal)
+                    ship.DamagedParts[clickedfield.X - ship.X] = true;
+                else
+                    ship.DamagedParts[clickedfield.Y - ship.Y] = true;
+            }
+            GameRenderer.Enemy.RenderGameField();
+            Game.NextTurn();
+        }
+
+        private void Game_GameStateChange(object sender, GameStateChangeEventArgs e)
+        {
+            moveUpButton.Enabled = false;
+            moveDownButton.Enabled = false;
+            moveLeftButton.Enabled = false;
+            moveRightButton.Enabled = false;
+            rotateButton.Enabled = false;
         }
     }
 }

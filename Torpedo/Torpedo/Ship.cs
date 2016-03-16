@@ -25,15 +25,22 @@ namespace Torpedo
         }
         public ShipDirection Direction { get; set; }
         public bool[] DamagedParts;
-        public bool Enemy;
+        public Player Owner;
+        public bool Enemy
+        {
+            get
+            {
+                return Owner == Player.CurrentEnemy;
+            }
+        }
 
-        public Ship(int x, int y, int size, ShipDirection direction, bool enemy)
+        public Ship(int x, int y, int size, ShipDirection direction, Player owner)
         {
             X = x;
             Y = y;
             Size = size; //A DamagedParts-ot is inicializálja
             Direction = direction;
-            Enemy = enemy;
+            Owner = owner;
         }
 
         /// <summary>
@@ -97,7 +104,7 @@ namespace Torpedo
             {
                 if (dircheck)
                 {
-                    Ship ship2 = GetShipAtField(ship.Enemy, ship.X + dx + i, ship.Y + dy);
+                    Ship ship2 = GetShipAtField(ship.Owner, ship.X + dx + i, ship.Y + dy);
                     if (ship2 != null && ship2 != ship)
                     {
                         hasship = true;
@@ -106,7 +113,7 @@ namespace Torpedo
                 }
                 else
                 {
-                    Ship ship2 = GetShipAtField(ship.Enemy, ship.X + dx, ship.Y + dy + i);
+                    Ship ship2 = GetShipAtField(ship.Owner, ship.X + dx, ship.Y + dy + i);
                     if (ship2 != null && ship2 != ship)
                     {
                         hasship = true;
@@ -117,13 +124,8 @@ namespace Torpedo
             return hasship;
         }
 
-        public static Ship GetShipAtField(bool enemy, int x, int y)
+        public static Ship GetShipAtField(Player player, int x, int y)
         {
-            Player player = null;
-            if (enemy)
-                player = Player.Player2;
-            else
-                player = Player.Player1;
             return player.Ships.SingleOrDefault(s =>
              {
                  if (s.Direction != ShipDirection.Horizontal)

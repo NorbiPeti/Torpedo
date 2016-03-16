@@ -42,7 +42,7 @@ namespace Torpedo
 
         public override void RenderGameField()
         {
-            Player.Player1.Ships.ForEach(s => RenderShip(s)); //TODO
+            Player.CurrentOwn.Ships.ForEach(s => RenderShip(s));
         }
     }
 
