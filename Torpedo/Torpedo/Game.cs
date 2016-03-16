@@ -114,12 +114,20 @@ namespace Torpedo
                     GameForm.Instance.Reset();
                     return;
                 }
+                if (Player.CurrentOwn.Ships.All(s => s.DamagedParts.All(d => d)))
+                {
+                    MessageBox.Show("Vereség!");
+                    GameForm.Instance.Reset();
+                    return;
+                }
                 if (Type == GameType.Singleplayer)
                 {
+                    GameForm.Instance.SetPanelsEnabled(false);
                     Player.SwapPlayers();
                     if (Player.CurrentOwn == Player.Player2)
-                        AIPlayer.PlaceShips();
+                        AIPlayer.Attack();
                     Player.SwapPlayers();
+                    GameForm.Instance.SetPanelsEnabled(true);
                 }
                 else if (Type == GameType.Multiplayer)
                 {

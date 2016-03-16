@@ -98,6 +98,8 @@ namespace Torpedo
             {
                 int width = Parent.Width / Game.GameSize.Width;
                 int height = Parent.Height / Game.GameSize.Height;
+                if (x > Game.GameSize.Width || x < 0 || y > Game.GameSize.Height || y < 0)
+                    throw new InvalidOperationException("A koordináták a játéktéren kívül esnek.");
                 gr.FillRectangle(new SolidBrush(color), x * width, y * height, width, height);
             }
         }

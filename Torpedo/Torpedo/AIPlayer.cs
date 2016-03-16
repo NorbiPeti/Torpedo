@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,24 @@ namespace Torpedo
 
         public static void Attack()
         {
-            //TODO
+            int x, y;
+            do
+            {
+                x = rand.Next(Game.GameSize.Width);
+                y = rand.Next(Game.GameSize.Height);
+            } while (Player.Player2.Shots.Any(p => p.X == x && p.Y == y));
+                Ship ship = Ship.GetShipAtField(Player.CurrentEnemy, x, y);
+            if (ship == null)
+            {
+                Player.CurrentOwn.Shots.Add(new Point(x, y));
+            }
+            else
+            {
+                if (ship.Direction == ShipDirection.Horizontal)
+                    ship.DamagedParts[x - ship.X] = true;
+                else
+                    ship.DamagedParts[y - ship.Y] = true;
+            }
         }
     }
 }

@@ -18,8 +18,10 @@ namespace Torpedo
 
         private static ReadOnlyDictionary<FieldTypeOwn, Color> FieldTypes = new ReadOnlyDictionary<FieldTypeOwn, Color>(new Dictionary<FieldTypeOwn, Color>()
         {
-            {FieldTypeOwn.OwnShip, Color.LightGray},
-            {FieldTypeOwn.OwnShipDamaged, Color.DarkRed}
+            { FieldTypeOwn.OwnShip, Color.LightGray },
+            { FieldTypeOwn.OwnShipDamaged, Color.DarkRed },
+            { FieldTypeOwn.OwnShipDestroyed, Color.Black },
+            { FieldTypeOwn.Missed, Color.LightBlue }
         });
 
         public void UpdateField(int x, int y, FieldTypeOwn fieldtype)
@@ -30,12 +32,18 @@ namespace Torpedo
         public override void RenderShip(Ship ship)
         {
             //TODO: Képek az egyes hajótípusokhoz
+            bool destroyed = ship.DamagedParts.All(p => p);
             for (int i = 0; i < ship.Size; i++)
             {
+                FieldTypeOwn fto = FieldTypeOwn.OwnShip;
+                if (destroyed)
+                    fto = FieldTypeOwn.OwnShipDestroyed;
+                else if (ship.DamagedParts[i])
+                    fto = FieldTypeOwn.OwnShipDamaged;
                 if (ship.Direction == ShipDirection.Horizontal)
-                    UpdateField(ship.X + i, ship.Y, FieldTypeOwn.OwnShip);
+                    UpdateField(ship.X + i, ship.Y, fto);
                 else
-                    UpdateField(ship.X, ship.Y + i, FieldTypeOwn.OwnShip);
+                    UpdateField(ship.X, ship.Y + i, fto);
             }
             //TODO: Rárajzolni a képet a mezőkre
         }
@@ -43,12 +51,15 @@ namespace Torpedo
         public override void RenderGameField()
         {
             Player.CurrentOwn.Ships.ForEach(s => RenderShip(s));
+            Player.CurrentEnemy.Shots.ForEach(s => UpdateField(s.X, s.Y, FieldTypeOwn.Missed));
         }
     }
 
     public enum FieldTypeOwn
     {
         OwnShip,
-        OwnShipDamaged
+        OwnShipDamaged,
+        OwnShipDestroyed,
+        Missed
     }
 }
