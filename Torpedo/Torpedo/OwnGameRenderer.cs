@@ -31,7 +31,6 @@ namespace Torpedo
 
         public override void RenderShip(Ship ship)
         {
-            //TODO: Képek az egyes hajótípusokhoz
             bool destroyed = ship.DamagedParts.All(p => p);
             for (int i = 0; i < ship.Size; i++)
             {
@@ -45,7 +44,6 @@ namespace Torpedo
                 else
                     UpdateField(ship.X, ship.Y + i, fto);
             }
-            //TODO: Rárajzolni a képet a mezőkre
         }
 
         public override void RenderGameField()
