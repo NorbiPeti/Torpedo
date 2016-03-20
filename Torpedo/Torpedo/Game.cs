@@ -66,7 +66,7 @@ namespace Torpedo
             }
         }
 
-        public static void NextTurn()
+        public static void NextTurn(bool hit)
         {
             if (State == GameState.Prepare)
             {
@@ -122,6 +122,8 @@ namespace Torpedo
                 }
                 if (Type == GameType.Singleplayer)
                 {
+                    if (hit)
+                        return;
                     GameForm.Instance.SetPanelsEnabled(false);
                     Player.SwapPlayers();
                     if (Player.CurrentOwn == Player.Player2)
@@ -131,6 +133,8 @@ namespace Torpedo
                 }
                 else if (Type == GameType.Multiplayer)
                 {
+                    if (hit)
+                        return;
                     Timer t = new Timer();
                     t.Interval = 2000;
                     int c = 0;

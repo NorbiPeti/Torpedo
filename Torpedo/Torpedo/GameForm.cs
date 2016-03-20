@@ -108,7 +108,7 @@ namespace Torpedo
             {
                 shipSizeLabel.Text = "";
                 lastship = null;
-                Game.NextTurn();
+                Game.NextTurn(false);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Torpedo
                     ship.DamagedParts[clickedfield.Y - ship.Y] = true;
             }
             GameRenderer.Enemy.RenderGameField();
-            Game.NextTurn();
+            Game.NextTurn(ship != null);
         }
 
         private void Game_GameStateChange(object sender, GameStateChangeEventArgs e)

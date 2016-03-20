@@ -21,7 +21,7 @@ namespace Torpedo
             { FieldTypeOwn.OwnShip, Color.LightGray },
             { FieldTypeOwn.OwnShipDamaged, Color.DarkRed },
             { FieldTypeOwn.OwnShipDestroyed, Color.Black },
-            { FieldTypeOwn.Missed, Color.LightBlue }
+            { FieldTypeOwn.Missed, Color.LightBlue },
         });
 
         public void UpdateField(int x, int y, FieldTypeOwn fieldtype)

@@ -44,7 +44,7 @@
             // 
             // ownPanel
             // 
-            this.ownPanel.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.ownPanel.BackColor = System.Drawing.Color.Lime;
             this.ownPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ownPanel.Location = new System.Drawing.Point(12, 27);
             this.ownPanel.Name = "ownPanel";
@@ -75,13 +75,13 @@
             // többjátékosToolStripMenuItem
             // 
             this.többjátékosToolStripMenuItem.Name = "többjátékosToolStripMenuItem";
-            this.többjátékosToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
+            this.többjátékosToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
             this.többjátékosToolStripMenuItem.Text = "Többjátékos";
             this.többjátékosToolStripMenuItem.Click += new System.EventHandler(this.GameTypeMenuClick);
             // 
             // enemyPanel
             // 
-            this.enemyPanel.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.enemyPanel.BackColor = System.Drawing.Color.Lime;
             this.enemyPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.enemyPanel.Location = new System.Drawing.Point(405, 27);
             this.enemyPanel.Name = "enemyPanel";
@@ -115,7 +115,7 @@
             this.moveRightButton.Name = "moveRightButton";
             this.moveRightButton.Size = new System.Drawing.Size(75, 75);
             this.moveRightButton.TabIndex = 4;
-            this.moveRightButton.Text = "Jobbra";
+            this.moveRightButton.Text = "Jobb";
             this.moveRightButton.UseVisualStyleBackColor = true;
             this.moveRightButton.Click += new System.EventHandler(this.MoveShip);
             // 
@@ -135,7 +135,7 @@
             this.moveLeftButton.Name = "moveLeftButton";
             this.moveLeftButton.Size = new System.Drawing.Size(75, 75);
             this.moveLeftButton.TabIndex = 6;
-            this.moveLeftButton.Text = "Le";
+            this.moveLeftButton.Text = "Bal";
             this.moveLeftButton.UseVisualStyleBackColor = true;
             this.moveLeftButton.Click += new System.EventHandler(this.MoveShip);
             // 
@@ -169,7 +169,7 @@
             this.MinimizeBox = false;
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Torpedó";
+            this.Text = "Csorpedóóó";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
