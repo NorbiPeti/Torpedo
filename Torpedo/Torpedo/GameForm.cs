@@ -141,17 +141,26 @@ namespace Torpedo
                 return;
             Point clickedfield = GameRenderer.Enemy.PixelsToFields(enemyPanel.PointToClient(Cursor.Position));
             Ship ship = Ship.GetShipAtField(Player.CurrentEnemy, clickedfield.X, clickedfield.Y);
-            if (ship == null)
-            {
-                Player.CurrentOwn.Shots.Add(clickedfield);
-            }
-            else
+            if (Player.CurrentOwn.Shots.Any(s => s.X == clickedfield.X && s.Y == clickedfield.Y))
+                return;
+            if (ship != null)
             {
                 if (ship.Direction == ShipDirection.Horizontal)
-                    ship.DamagedParts[clickedfield.X - ship.X] = true;
+                {
+                    if (!ship.DamagedParts[clickedfield.X - ship.X]) //Felesleges, mivel a Shots már eltárolja a találatokat is...
+                        ship.DamagedParts[clickedfield.X - ship.X] = true;
+                    else
+                        return;
+                }
                 else
-                    ship.DamagedParts[clickedfield.Y - ship.Y] = true;
+                {
+                    if (!ship.DamagedParts[clickedfield.Y - ship.Y])
+                        ship.DamagedParts[clickedfield.Y - ship.Y] = true;
+                    else
+                        return;
+                }
             }
+            Player.CurrentOwn.Shots.Add(clickedfield);
             GameRenderer.Enemy.RenderGameField();
             Game.NextTurn(ship != null);
         }

@@ -33,18 +33,26 @@ namespace Torpedo
                 x = rand.Next(Game.GameSize.Width);
                 y = rand.Next(Game.GameSize.Height);
             } while (Player.Player2.Shots.Any(p => p.X == x && p.Y == y));
-                Ship ship = Ship.GetShipAtField(Player.CurrentEnemy, x, y);
-            if (ship == null)
-            {
-                Player.CurrentOwn.Shots.Add(new Point(x, y));
-            }
-            else
+            Ship ship = Ship.GetShipAtField(Player.CurrentEnemy, x, y);
+            if (Player.CurrentOwn.Shots.Any(s => s.X == x && s.Y == y))
+                return;
+            if (ship != null)
             {
                 if (ship.Direction == ShipDirection.Horizontal)
-                    ship.DamagedParts[x - ship.X] = true;
+                {
+                    if (!ship.DamagedParts[x - ship.X])
+                        ship.DamagedParts[x - ship.X] = true;
+                    else
+                        return;
+                }
                 else
-                    ship.DamagedParts[y - ship.Y] = true;
+                {
+                    if (!ship.DamagedParts[y - ship.Y])
+                        ship.DamagedParts[y - ship.Y] = true;
+                    else return;
+                }
             }
+            Player.CurrentOwn.Shots.Add(new Point(x, y));
         }
     }
 }

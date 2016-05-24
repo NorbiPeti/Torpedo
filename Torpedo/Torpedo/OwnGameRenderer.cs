@@ -48,8 +48,8 @@ namespace Torpedo
 
         public override void RenderGameField()
         {
-            Player.CurrentOwn.Ships.ForEach(s => RenderShip(s));
             Player.CurrentEnemy.Shots.ForEach(s => UpdateField(s.X, s.Y, FieldTypeOwn.Missed));
+            Player.CurrentOwn.Ships.ForEach(s => RenderShip(s));
         }
     }
 
